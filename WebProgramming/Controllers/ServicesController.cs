@@ -3,9 +3,7 @@ using WebProgramming.Models;
 
 namespace WebProgramming.Controllers
 {
-    [Route("api/services")]
-    [ApiController]
-    public class ServicesController : ControllerBase
+    public class ServicesController : Controller
     {
         private readonly BarberContext _context;
 
@@ -14,69 +12,64 @@ namespace WebProgramming.Controllers
             _context = context;
         }
 
-        // Tüm hizmetleri listeleme
+        public IActionResult Index()
+        {
+            var services = _context.Services.ToList();
+            return View(services);
+        }
+
         [HttpGet]
-        public async Task<IActionResult> GetServices()
+        public IActionResult Create()
         {
-            var services = await Task.FromResult(_context.Services.ToList());
-            return Ok(services);
+            return View();
         }
 
-        // Belirli bir hizmeti ID ile alma
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetService(int id)
-        {
-            var service = await Task.FromResult(_context.Services.Find(id));
-
-            if (service == null)
-                return NotFound(new { message = "Hizmet bulunamadı." });
-
-            return Ok(service);
-        }
-
-        // Yeni bir hizmet ekleme
         [HttpPost]
-        public async Task<IActionResult> AddService([FromBody] Service service)
+        public IActionResult Create(Service service)
         {
-            if (service == null)
-                return BadRequest(new { message = "Geçersiz hizmet verisi." });
-
-            _context.Services.Add(service);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetService), new { id = service.ServiceID }, service);
+            if (ModelState.IsValid)
+            {
+                _context.Services.Add(service);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(service);
         }
 
-        // Mevcut bir hizmeti güncelleme
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateService(int id, [FromBody] Service updatedService)
+        [Route("api/[controller]")]
+        [ApiController]
+        public class ServicesApiController : ControllerBase
         {
-            if (id != updatedService.ServiceID)
-                return BadRequest(new { message = "ID uyuşmazlığı." });
+            private readonly BarberContext _context;
 
-            var service = _context.Services.Find(id);
-            if (service == null)
-                return NotFound(new { message = "Hizmet bulunamadı." });
+            public ServicesApiController(BarberContext context)
+            {
+                _context = context;
+            }
 
-            service.ServiceName = updatedService.ServiceName;
-            service.Duration = updatedService.Duration;
-            service.Price = updatedService.Price;
+            // Tüm hizmetleri listeleme
+            [HttpGet]
+            public IActionResult GetAllServices()
+            {
+                var services = _context.Services.ToList();
+                return Ok(services);
+            }
 
-            await _context.SaveChangesAsync();
-            return NoContent();
+            // Yeni hizmet ekleme
+            [HttpPost]
+            public IActionResult CreateService([FromBody] Service service)
+            {
+                if (ModelState.IsValid)
+                {
+                    _context.Services.Add(service);
+                    _context.SaveChanges();
+                    return CreatedAtAction(nameof(GetAllServices), new { id = service.ServiceID }, service);
+                }
+                return BadRequest(ModelState);
+            }
         }
 
-        // Bir hizmeti silme
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteService(int id)
-        {
-            var service = _context.Services.Find(id);
-            if (service == null)
-                return NotFound(new { message = "Hizmet bulunamadı." });
 
-            _context.Services.Remove(service);
-            await _context.SaveChangesAsync();
-            return NoContent();
-        }
     }
 
 }

@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Service>
+
+<h2>Hizmet Listesi</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>İşlem Adı</th>
+            <th>Süre (Dakika)</th>
+            <th>Ücret (TL)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var service in Model)
+        {
+            <tr>
+                <td>@service.ServiceName</td>
+                <td>@service.Duration</td>
+                <td>@service.Price</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
