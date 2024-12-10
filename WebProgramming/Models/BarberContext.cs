@@ -14,7 +14,7 @@ namespace WebProgramming.Models
         {
             modelBuilder.Entity<Service>()
                 .Property(s => s.Price)
-                .HasColumnType("decimal(18,2)"); // 18 basamak, 2 ondalık basamak
+                .HasColumnType("decimal(18,2)"); 
         }
     }
 
