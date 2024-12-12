@@ -31,7 +31,7 @@ namespace WebProgramming.Controllers
             {
                 _context.Services.Add(service);
                 _context.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index ");
             }
             return View(service);
         }
