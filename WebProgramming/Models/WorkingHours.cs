@@ -6,6 +6,7 @@
         public string Day { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
+        public int RestaurantID { get; set; }
     }
 
 }
