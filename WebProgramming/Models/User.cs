@@ -2,7 +2,7 @@
 
 namespace WebProgramming.Models
 {
-    public class Employee
+    public class User
     {
         public int Id { get; set; }
 
@@ -19,8 +19,5 @@ namespace WebProgramming.Models
         [Required(ErrorMessage = "E-posta zorunludur.")]
         [EmailAddress(ErrorMessage = "Geçerli bir e-posta adresi giriniz.")]
         public string Email { get; set; }
-
-        [Required(ErrorMessage = "Pozisyon zorunludur.")]
-        public string Position { get; set; }
     }
 }

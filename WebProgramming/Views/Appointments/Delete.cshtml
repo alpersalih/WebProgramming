@@ -1,0 +1,23 @@
+﻿@model WebProgramming.Models.Appointment
+
+<h2>Randevuyu Sil</h2>
+
+<h3>Bu randevuyu silmek istediğinizden emin misiniz?</h3>
+<div>
+    <h4>@Model.User.FirstName @Model.User.LastName</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Hizmet:</dt>
+        <dd class="col-sm-10">@Model.Service.Name</dd>
+        <dt class="col-sm-2">Tarih ve Saat:</dt>
+        <dd class="col-sm-10">@Model.AppointmentTime.ToString("dd.MM.yyyy HH:mm")</dd>
+        <dt class="col-sm-2">Durum:</dt>
+        <dd class="col-sm-10">@Model.Status</dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Sil</button>
+        <a asp-action="Index" class="btn btn-secondary">İptal</a>
+    </form>
+</div>

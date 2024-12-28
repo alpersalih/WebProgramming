@@ -1,16 +1,14 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using WebProgramming.Data;
 using WebProgramming.Models;
-using WebProgramming.Data
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebProgramming.Controllers
 {
-    public class ServicesController : Controller
+    public class EmployeesController : Controller
     {
         private readonly AppDbContext _context;
 
-        public ServicesController(AppDbContext context)
+        public EmployeesController(AppDbContext context)
         {
             _context = context;
         }
@@ -18,8 +16,8 @@ namespace WebProgramming.Controllers
         // Listeleme
         public IActionResult Index()
         {
-            var services = _context.Services.ToList();
-            return View(services);
+            var employees = _context.Employees.ToList();
+            return View(employees);
         }
 
         // Ekleme Formu
@@ -30,65 +28,65 @@ namespace WebProgramming.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Service service)
+        public IActionResult Create(Employee employee)
         {
             if (ModelState.IsValid)
             {
-                _context.Services.Add(service);
+                _context.Employees.Add(employee);
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
-            return View(service);
+            return View(employee);
         }
 
         // Düzenleme Formu
         public IActionResult Edit(int id)
         {
-            var service = _context.Services.Find(id);
-            if (service == null)
+            var employee = _context.Employees.Find(id);
+            if (employee == null)
             {
                 return NotFound();
             }
-            return View(service);
+            return View(employee);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Service service)
+        public IActionResult Edit(int id, Employee employee)
         {
-            if (id != service.Id)
+            if (id != employee.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                _context.Services.Update(service);
+                _context.Employees.Update(employee);
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
-            return View(service);
+            return View(employee);
         }
 
         // Silme Formu
         public IActionResult Delete(int id)
         {
-            var service = _context.Services.Find(id);
-            if (service == null)
+            var employee = _context.Employees.Find(id);
+            if (employee == null)
             {
                 return NotFound();
             }
-            return View(service);
+            return View(employee);
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            var service = _context.Services.Find(id);
-            if (service != null)
+            var employee = _context.Employees.Find(id);
+            if (employee != null)
             {
-                _context.Services.Remove(service);
+                _context.Employees.Remove(employee);
                 _context.SaveChanges();
             }
             return RedirectToAction(nameof(Index));
